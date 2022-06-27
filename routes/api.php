@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 //Public Routes
 Route::post('register',[AuthController::class, 'register']);
 
-
 //Authenticated Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
     //Products Routes
@@ -31,7 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::delete('product/{id}',[ProductsController::class, 'deleteProduct']);
     Route::get('seller-products/{id}',[ProductsController::class, 'sellerProducts']);
     //Users Routes
-    
+    Route::get('users',[UserController::class, 'index']);
     Route::get('user/{id}',[UserController::class, 'show']);
     Route::put('user/{id}',[UserController::class, 'update']);
     Route::delete('user/{id}',[UserController::class, 'delete']);
@@ -40,7 +39,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('reset',[UserController::class, 'reset']);
 });
 
-Route::get('users',[UserController::class, 'index']);
+
 
 
 

@@ -19,7 +19,7 @@ class AuthController extends Controller
         $role_id = [1,2];
         $fields = $request->validate([
             'username' => 'required|unique:users,username|string|min:2',
-            'email' => 'string|unique:users,email',
+            'email' => 'string|unique:users,email|email',
             'password' => 'required|string|confirmed',
             'role_id' => 'required|in:' . implode(',', $role_id).'|numeric',
         ]);

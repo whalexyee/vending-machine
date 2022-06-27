@@ -46,7 +46,7 @@ class UserController extends Controller
             $role_id = [1,2];
             $request->validate([
                 'username' => 'sometimes|required|unique:users,username|string|min:2',
-                'email' => 'sometimes|string|unique:users,email',
+                'email' => 'sometimes|string|unique:users,email|email',
                 'password' => 'sometimes|required|string|confirmed',
                 'role_id' => 'sometimes|required|in:' . implode(',', $role_id).'|numeric',
             ]);

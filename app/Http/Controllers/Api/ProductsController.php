@@ -71,7 +71,7 @@ class ProductsController extends Controller
                     $request->validate([
                         'name' => 'sometimes|required|min:3',
                         'slug' => 'sometimes|required',
-                        'cost' => 'sometimes|required|numeric',
+                        'cost' => 'sometimes|required|numeric|multiple_of:5',
                         'amount_available' => 'sometimes|required|numeric',
                     ]);
                     $product->update($request->all());
@@ -90,10 +90,11 @@ class ProductsController extends Controller
     public function getSingleProduct($id)
     {
         $product = Product::with('seller')->find($id);
+        
         if ($product) {
-            $this->respond(true,'Product retrieved!',$product,200);
+            return $this->respond(true,'Product retrieved!',$product,201);
         }
-        $this->respond(false,'Product does not exist!',null,404);  
+        return $this->respond(false,'Product does not exist!',null,404);  
     }
 
     public function deleteProduct($id)
