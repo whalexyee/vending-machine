@@ -23,7 +23,7 @@ class ProductsController extends Controller
     public function getAllProducts()
     {
         $products = Product::with('seller')->get();
-        return $this->respond(true,'Data retrieved',$products,200);
+        return $this->respond(true,'Data retrieved',$products,201);
     }
 
     public function createNewProduct(Request $request)
@@ -56,7 +56,7 @@ class ProductsController extends Controller
                 return $this->respond('error','Something went wrong',$e->getMessage(),422);
             }
         }
-        return $this->respond(false,'You are not a seller, you cant create a product',null,422);
+        return $this->respond(false,'You are not a seller, you cant create a product',null,403);
     }
 
     public function updateProduct(Request $request,$id)
@@ -82,7 +82,7 @@ class ProductsController extends Controller
                     return $this->respond('error','Something went wrong',$e->getMessage(),422);
                 }
             }
-            return $this->respond(false,'You cannot update this product, its not created by you!',null,422);
+            return $this->respond(false,'You cannot update this product, its not created by you!',null,403);
         }
         return $this->respond(false,'This product does not exist!',null,404);
     }
@@ -101,8 +101,13 @@ class ProductsController extends Controller
     {
         $product = Product::with('seller')->find($id);
         if ($product) {
-            $product->delete();
-            return $this->respond('true','Product Deleted',null,200);
+            $user = Auth::user();
+            //check if the product belongs to this user
+            if ($product->seller_id == $user->id) {
+                $product->delete();
+                return $this->respond('true','Product Deleted',null,200);
+            }
+            return $this->respond('error','You cannot delete the product, its not created by you',null,403);
         }
         return $this->respond('error','This product does not exist',null,404);
     }

@@ -41,6 +41,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->email);
         $user = User::with('role')->find($id);
         if ($user) {
             $role_id = [1,2];
@@ -188,7 +189,7 @@ class UserController extends Controller
                 ],422);
             }
             //product cannot be found ...
-            return $this->respond(false,'Product cannot be found',null,422);
+            return $this->respond(false,'Product cannot be found',null,404);
         }
         return $this->respond(false,'You dont have the role of a Buyer',null,422);
 
